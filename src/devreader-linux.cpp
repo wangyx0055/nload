@@ -14,6 +14,8 @@
 #include <string>
 #include <list>
 
+#include <stdexcept>
+
 using namespace std;
 
 bool DevReaderLinux::isAvailable()
@@ -28,6 +30,6 @@ list<string> DevReaderLinux::findAllDevices()
     else if(DevReaderLinuxProc::isAvailable())
         return DevReaderLinuxProc::findAllDevices();
     else
-        return list<string>();
+        throw std::runtime_error("neither sysfs nor proc is available");
 }
 

@@ -48,6 +48,8 @@
 #include <string>
 #include <vector>
 
+#include <stdexcept>
+
 #include <ctype.h>
 #include <time.h>
 #include <curses.h>
@@ -352,8 +354,17 @@ int main(int argc, char *argv[])
         }
     }
 
-    // auto-detect network devices
-    DevReaderFactory::findAllDevices();
+    try
+    {
+        // auto-detect network devices
+        DevReaderFactory::findAllDevices();
+    }
+    catch (std::runtime_error e)
+    {
+        cerr << "Cannot find any device: " << e.what() << endl;
+        return -1;
+    };
+
     const map<string, DevReader*>& deviceReaders = DevReaderFactory::getAllDevReaders();
 
     // create one instance of the Device class per device
